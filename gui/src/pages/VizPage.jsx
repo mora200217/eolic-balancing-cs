@@ -29,7 +29,7 @@ export const VizPage = () => {
      
     useEffect(() => {
         console.log(data); 
-        
+        new SerialPort("", {baudRate: })
         // console.log(port)
     }, [data])
     
