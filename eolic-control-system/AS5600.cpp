@@ -50,6 +50,25 @@ void AMS_5600::setOutPut(uint8_t mode)
   writeOneByte(_conf_lo, config_status);
 }
 
+
+
+float AMS_5600::getAngleProcessed()
+{
+  word newAngle = getRawAngle();
+  
+  float retVal = newAngle * 0.087890625;
+  const float OFFSET = 348.83789; 
+  if(retVal > 200){
+    retVal = retVal - OFFSET; 
+  }else{
+    retVal = retVal + (360 - OFFSET); 
+  }
+  
+  return retVal;
+}
+
+
+
 /****************************************************
   Method: AMS_5600
   In: none
@@ -456,3 +475,4 @@ void AMS_5600::writeOneByte(int adr_in, int dat_in)
 }
 
 /**********  END OF AMS 5600 CLASS *****************/
+
