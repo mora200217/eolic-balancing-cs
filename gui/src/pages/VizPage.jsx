@@ -1,4 +1,4 @@
-import { useDebugValue, useEffect } from "react";
+import { useDebugValue, useEffect, useState } from "react";
 import { ControlPanel } from "../components/ControlPanel"; 
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
@@ -9,9 +9,31 @@ import { flattenJSON } from "three/src/animation/AnimationUtils";
 import { GraphPlotter } from "../components/GraphPlotter";
 
 
-export const VizPage = () => {
+// import SerialPort from 'serialport'
+import SerialPort from "serialport"; 
 
+
+
+
+
+export const VizPage = () => {
     
+
+    const [data, setData] = useState([{x: 10, y: 10}]);
+    // const port = new SerialPort(
+    //     '/dev/cu.usbserial-14210', 
+    //     { baudRate: 115200}
+    // )
+
+    const interval = window.setInterval(() => setData([...data, {x: data[data.length - 1].x + 1, y: Math.random() * 100}]), 2000); 
+     
+    useEffect(() => {
+        console.log(data); 
+        
+        // console.log(port)
+    }, [data])
+    
+
     // id.appendChild( renderer.domElement );
 
     useEffect( () => {
@@ -98,14 +120,16 @@ export const VizPage = () => {
 
     return (
         <div>
-            <section className="" style={{
+            <section className="d-flex" style={{
                 width: "100vw",
                 height: "100vh",
                 bottom: 0
 
             }}>
+
+
             <div className="" style={{
-                position: "absolute",
+                width: "50vw",
                 left: 0,
                 bottom: 0,
                 border: "solid #fffff 2px", 
@@ -114,13 +138,15 @@ export const VizPage = () => {
                 // background: 'red' 
 
             }} id="myRenderer"/>
-            </section>
+
             
 
-           
-
-            <GraphPlotter data={data} />
-
+                <div style={{zIndex: 1000, height: "20vh", position: "", width: "50vw", top: 0, right: 0}} className="d-flex flex-column">
+                    <GraphPlotter data={data} />
+                    <GraphPlotter data={data} />
+                    
+                </div>
+                </section>
             {/* Titulo */}
             <div className="d-flex my-4 ms-5  flex-column position-absolute align-items-start" style={{"width": "fit-content", "bottom": "0"}}>
                 <h3>Proyecto de <strong>TdC</strong></h3>
