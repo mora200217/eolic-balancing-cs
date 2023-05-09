@@ -20,6 +20,8 @@
 
 #include <Arduino.h>
 
+
+
 class AMS_5600
 {
 public:
@@ -39,6 +41,8 @@ public:
   word getRawAngle();
   word getScaledAngle();
 
+  float getAngleProcessed(); // Personal 
+  
   int detectMagnet();
   int getMagnetStrength();
   int getAgc();
@@ -49,6 +53,9 @@ public:
   int getBurnCount();
   int burnAngle();
   int burnMaxAngleAndConfig();
+  
+  
+  
   void setOutPut(uint8_t mode);
 
 private:
