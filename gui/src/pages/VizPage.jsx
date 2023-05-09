@@ -6,6 +6,7 @@ import { STLLoader } from 'three/examples/jsm/loaders/STLLoader'
 import Stats from 'three/examples/jsm/libs/stats.module'
 import modelA  from '../assets/ensamble_fijo.stl'; 
 import { flattenJSON } from "three/src/animation/AnimationUtils";
+import { GraphPlotter } from "../components/GraphPlotter";
 
 
 export const VizPage = () => {
