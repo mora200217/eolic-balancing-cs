@@ -1,0 +1,6 @@
+En el archivo "hallar el miu" Se toman los datos obtenidos del encoder, en primer lugar se trasladan al marco de referencia que se tenía y posteriormente se lleva la curva lo más cercano a cero posible para obtener apropiadamente la exponencial, para eso se trasladan los datos respecto al valor final medido por el encoder. Esto para hallar la exponencial envolvente del sistema.
+
+En el archivo "pruebPuenteH" se caracteriza el puente H, esto se realiza cambiando el porcentaje de PWM aplicado y midiendo la tensión y corriente requerida por el motor.
+
+
+En el archivo "prueba fuerzaMotor" se encuentra la regresión lineal que caracteriza la fuerza entregada por el motor basado en el PWM entregado.
