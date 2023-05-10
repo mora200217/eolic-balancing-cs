@@ -9,9 +9,7 @@ import { flattenJSON } from "three/src/animation/AnimationUtils";
 import { GraphPlotter } from "../components/GraphPlotter";
 
 
-// import SerialPort from 'serialport'
-import SerialPort from "serialport"; 
-
+import { SerialPort } from 'serialport'
 
 
 
@@ -29,7 +27,7 @@ export const VizPage = () => {
      
     useEffect(() => {
         console.log(data); 
-        new SerialPort("", {baudRate: })
+        // new SerialPort("", {baudRate: 9600})
         // console.log(port)
     }, [data])
     

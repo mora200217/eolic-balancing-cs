@@ -35,11 +35,11 @@ void setup()
 void loop()
 { 
   
-   // SERIAL.print(180); 
-   // SERIAL.print("; "); 
-   // SERIAL.print(-180); 
-   SERIAL.print(millis() / 1000.0); 
+    SERIAL.print(180); 
+    SERIAL.print("; "); 
+    SERIAL.print(-180); 
+   // SERIAL.print(millis() / 1000.0); 
    SERIAL.print("; "); 
-    // SERIAL.print(";angle: ");
+//     SERIAL.print(";angle: ");
     SERIAL.println(String(ams5600.getAngleProcessed(),DEC));
 }
