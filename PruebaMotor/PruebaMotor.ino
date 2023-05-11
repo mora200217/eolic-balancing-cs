@@ -1,8 +1,10 @@
 //#inlude "BTS7960"
 
 
+
 #include <Wire.h>
 #include "./AS5600.h"
+
 const uint8_t EN1 = 12;  //L_EN = R_EN -> Mismo pin
 const uint8_t EN2 = 13;  //L_EN = R_EN -> Mismo pin
 const uint8_t L_PWM = 9;
@@ -12,13 +14,17 @@ const uint8_t R_PWM = 8;
 #define pwmMax 4095 
 
 //BTS7960 motorController(EN1, L_PWM, R_PWM);
+
 AMS_5600 sensor; 
+
 
 int pwmReal = 0;
 
 void setup() {
   // put your setup code here, to run once:
+
   Wire.begin(); 
+
   Serial.begin(115200);
   // Enables from the H bridge
   digitalWrite(EN1,HIGH);
@@ -48,6 +54,7 @@ void loop() {
 
   analogWriteADJ(L_PWM, (int)((pwmReal/100.0)*pwmMax));
   //analogWrite(L_PWM,pwmReal);
+
   // Serial.println(pwmReal);
   
   // Serial.print("PWM: "); 
@@ -59,6 +66,7 @@ void loop() {
   Serial.print(","); 
   // Serial.print("    Angle: ");
   Serial.println(String(sensor.getAngleProcessed(), DEC)); 
+
 
 
 
