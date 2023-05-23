@@ -1,4 +1,6 @@
 //Definición salidas para el motor
+#include "./AS5600.h"
+#include <Wire.h>
 
 int IN3 = 9;    // In3 (L298N) conectada al pin 5
 int IN4 = 6;    // In4 (L298N) conectada al pin 4
@@ -71,11 +73,15 @@ double CmdCp=0;   //señal Controlador con red incluida
 double CmdPIp=0;
 double CmdPIpp=0;
 
+AMS_5600 sensor; 
+
+
 void setup()
 {
  //Configuración de los pines como salidas
  //pinMode (ENB, OUTPUT);
  //pinMode (IN3, OUTPUT);
+ Wire.begin(); 
  pinMode (IN4, OUTPUT);
  Serial.begin(115200);
 }
@@ -93,7 +99,7 @@ void controlPI(){
   if (currentMillis - previousMillis >= Ts ) {
     previousMillis = currentMillis;
     sensorValue = analogRead(sensorPin);
-    ang=(202.3460388183-(float(sensorValue)*360/1023));
+    ang= sensor.getAngleProcessed(); // (202.3460388183-(float(sensorValue)*360/1023));
     double Cmd = directCmd+CmdC
     ;  
     double CmdLim = min(max(Cmd, 0), 1); // Saturated Control Output
