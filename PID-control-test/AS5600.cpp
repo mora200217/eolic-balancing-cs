@@ -5,7 +5,7 @@
   Date: 15 Dec 2014 
   File: AMS_5600.cpp
   Version 1.00
-  www.ams.com
+  www.ams.coms
    
   Description:  This class has been designed to
   access the AMS 5600 “potuino” shield.
