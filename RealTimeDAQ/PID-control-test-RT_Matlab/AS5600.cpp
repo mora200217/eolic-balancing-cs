@@ -59,7 +59,7 @@ float AMS_5600::getAngleProcessed()
   float retVal = newAngle * 0.087890625;
   // return retVal;
 
-  const float OFFSET = 246.18164; 
+  const float OFFSET = 251.18164; 
   if(retVal > 200){
     retVal = retVal - OFFSET; 
   }else{

@@ -17,6 +17,7 @@ int sensorValue = 0;  // variable to store the value coming from the sensor
 double ang = 0;
 
 long previousMillis2 = 0; // For auxiliary functions (squarewaves)
+long StartTime=0;
 bool up = true;
 int i = 0;
 AMS_5600 sensor;
@@ -109,21 +110,24 @@ void loop()
     while(!newData){recvWithStartEndMarkers();}
     if (newData == true) {
       inicio=1;
+      StartTime=millis();
+      
       parseData();
       newData = false;
+
     }
   }
   
   controlPI();
-
+  
   //RefChange();
   //caracterizacion();
 }
 
 void caracterizacion() {
-  unsigned long currentMillis = millis() - 1000;
-  if (currentMillis <= 1000) {
-    cmd = 0.2;
+  unsigned long currentMillis = millis() - StartTime;
+  /*if (currentMillis <= 1000) {
+    cmd = 0;
   } else if (currentMillis <= 6000) {
     cmd = 0.2;
   } else if (currentMillis <= 11000) {
@@ -132,30 +136,37 @@ void caracterizacion() {
     cmd = 0.1;
   } else {
     cmd = 0.2;
-  }
+  }*/
   ang = sensor.getAngleProcessed();
   pwmDuty = int((cmd) * pwmMax);
   analogWrite(IN3, pwmDuty);
-  //Serial.print("time: ");
-  Serial.print(currentMillis / 1000.0 + 1, DEC);
-  //Serial.print(",");
-  //Serial.print(" pwm: ");
-  Serial.print(cmd, DEC);
-  Serial.print("\t");
-  //Serial.print(" angle:");
-  Serial.println(ang, DEC);
+
+  
+    Serial.print(currentMillis / 1000.0,4);
+    Serial.print("\t");
+    Serial.print(cmd,3);
+    Serial.print("\t");
+    Serial.println(ang,3);
+
+
+    recvWithStartEndMarkers();
+      if (newData == true) {
+        parseData();
+        newData = false;
+      }
+    
 }
 
 void controlPI() {
 
-  unsigned long currentMillis = millis();
+  unsigned long currentMillis = millis()-StartTime;
   if (currentMillis - previousMillis >= Ts ) {
 
     previousMillis = currentMillis;
     //sensorValue = analogRead(sensorPin);
     //ang=(202.3460388183-(float(sensorValue)*360/1023));
-    //ang = sensor.getAngleProcessed();
-    ang=50;
+    ang = sensor.getAngleProcessed();
+    //ang=50;
     double Cmd = directCmd + CmdC;
     double CmdLim = min(max(Cmd, 0), 1); // Saturated Control Output
     pwmDuty = int((CmdLim / 1) * pwmMax);
@@ -182,11 +193,11 @@ void controlPI() {
 
     }
 
-    Serial.print(currentMillis / 1000.0);
+    Serial.print(currentMillis / 1000.0,4);
     Serial.print("\t");
-    Serial.print(CmdLim*100);
+    Serial.print(CmdLim*100,3);
     Serial.print("\t");
-    Serial.print(ang);
+    Serial.print(ang,3);
     Serial.print("\t");
     Serial.println(Ref);
   }
@@ -257,4 +268,5 @@ void recvWithStartEndMarkers() {
 
 void parseData() {      // split the data into its parts
   Ref = atof(receivedChars);     // convert serial input to a float and update System Reference value with that value
+  //cmd = atof(receivedChars);     // convert serial input to a float and update System Reference value with that value
 }
