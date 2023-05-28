@@ -1,4 +1,4 @@
-function [G, Gnum, Gden] =FoundTF(thetap)
+function [Gss, G, Gnum, Gden] =FoundTF(thetap)
 %Pesos [N]
 wb=0.105948;
 wcp= 0.014145;
@@ -34,6 +34,19 @@ Gden = cell2mat(G.Denominator);
 %Parametros del motor
 DZ = 3;
 MAX_PWM = 80;
+
+%Variables de estado
+ass = (km*d1)/I;
+bss = (wcp*d2-wm*d1-wb*e)/I;
+css = miu/I;
+A = [0 1; bss*cosd(thetap) -css];
+B = [0 ass]';
+C = [0 1];
+D = [0];
+
+Gss = ss(A,B,C,D);
+Gss.StateName= {'Velocity','Position'};
+Gss.OutputName= {'Position'};
 
 save('TF.mat');
 
