@@ -38,15 +38,15 @@ MAX_PWM = 80;
 %Variables de estado
 ass = (km*d1)/I;
 bss = (wcp*d2-wm*d1-wb*e)/I;
-css = miu/I;
-A = [0 1; bss*cosd(thetap) -css];
+css = -miu/I;
+A = [0 1; bss*cosd(thetap), css];
 B = [0 ass]';
-C = [0 1];
+C = [1 0];
 D = [0];
 
-Gss = ss(A,B,C,D);
-Gss.StateName= {'Velocity','Position'};
-Gss.OutputName= {'Position'};
+Gss = ss(A, B, C, D);
+Gss.StateName= {'theta','omega'};
+Gss.OutputName= {'theta'};
 
 save('TF.mat');
 
