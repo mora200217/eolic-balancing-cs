@@ -1,2 +1,7 @@
-# eolic-balancing-cs
-Automatic control system. Self balancing arm with eolic system. 
+# Eolic Balancing System
+
+
+## Diseño del observador LQR 
+
+## H Infinito
+
