@@ -1,7 +1,7 @@
 # Eolic Balancing System
 
 
-## Diseño del observador LQR 
+## Diseño del observador LQR 
 
-## H Infinito
+## H Infinito
 
