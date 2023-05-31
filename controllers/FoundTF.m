@@ -16,11 +16,12 @@ I=15e-5;
 Coeficiente = wcp*d2-wm*d1-wb*e;
 
 %Constante del motor
-km=0.00118;
+km=0.001118;
 
 %Constante de Fricción
 beta = 1.667;
 miu=beta*2*I;
+
 
 %TransferFunction
 s=tf('s');
@@ -48,6 +49,6 @@ Gss = ss(A, B, C, D);
 Gss.StateName= {'theta','omega'};
 Gss.OutputName= {'theta'};
 
-save('TF.mat');
+save('data/TF.mat');
 
 end
