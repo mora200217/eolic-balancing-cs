@@ -86,8 +86,33 @@ float cmd = 0;
 
 bool inicio=0;
 
+double CmdLim = 0;
+
+//Observador
+
+double A[2][2];
+double B[2][1];
+double C[1][2];
+double D;
+
+double L[2][1] = {{42.6055},{857.6136}};
+
+//int ang, lang = 0;
+
+float thetaP = 0;
+float omegaP = 0;
+float angleP = 0;
+float uP = 0;
+
+float thetaHat;
+float omegaHat;
+
+
+
 void setup()
 {
+  //Configuración TF
+  foundTF(89);
   //Configuración de los pines como salidas
   pinMode (ENB1, OUTPUT);
   pinMode (ENB2, OUTPUT);
@@ -122,6 +147,15 @@ void loop()
   
   //RefChange();
   //caracterizacion();
+}
+
+void observer(){
+  //ang = ams5600.getAngleProcessed();
+  thetaHat = A[0][0]*thetaP+A[0][1]*omegaP+B[0][0]*CmdLim+L[0][0]*angleP-L[0][0]*thetaP;
+  omegaHat = A[1][0]*thetaP+A[1][1]*omegaP+B[1][0]*CmdLim+L[1][0]*angleP-L[1][0]*thetaP;
+  thetaP = thetaHat;
+  omegaP = omegaHat;
+  angleP = ang*PI/180.0;
 }
 
 void caracterizacion() {
@@ -166,9 +200,10 @@ void controlPI() {
     //sensorValue = analogRead(sensorPin);
     //ang=(202.3460388183-(float(sensorValue)*360/1023));
     ang = sensor.getAngleProcessed();
+    observer();
     //ang=50;
     double Cmd = directCmd + CmdC;
-    double CmdLim = min(max(Cmd, 0), 1); // Saturated Control Output
+    CmdLim = min(max(Cmd, 0), 1); // Saturated Control Output
     pwmDuty = int((CmdLim / 1) * pwmMax);
     analogWrite(IN3, pwmDuty);
 
@@ -199,7 +234,11 @@ void controlPI() {
     Serial.print("\t");
     Serial.print(ang,3);
     Serial.print("\t");
-    Serial.println(Ref);
+    Serial.print(Ref);
+    Serial.print("\t");
+    Serial.print(thetaHat);
+    Serial.print("\t");
+    Serial.println(omegaHat);
   }
 
   recvWithStartEndMarkers();
@@ -224,6 +263,57 @@ void RefChange() {
 }
 
 
+void foundTF(int angleLin) {
+  //Pesos [N]
+  float wb = 0.105948;
+  float wcp = 0.014145;
+  float wm = 0.030411;
+
+  //Distancias [m]
+  float d1 = 130.75e-3;
+  float d2 = 50.75e-3;
+  float e = 41.91e-3;
+
+  //Momento de inercia [kg-m^2]
+  float I = 15e-5;
+
+  //Coeficiente término \theta
+  float Coeficiente = wcp * d2 - wm * d1 - wb * e;
+
+  //Constante del motor
+  float km = 0.001118;
+
+  //Constante de Fricción
+  float beta = 1.667;
+  float miu = beta * 2 * I;
+
+  //Variables de estado
+  float ass = (km * d1) / I;
+  float bss = (wcp * d2 - wm * d1 - wb * e) / I;
+  float css = -miu / I;
+
+  /*float A [2] [2]= {{0, 1}, {bss*cos(angleLin*PI/180), css}};
+float B [2] [1]= {{0}, {ass}};
+float C [1] [2]= {1, 0};
+float D = 0;*/
+
+  // Se llena la matriz A
+  A[0][0] = 0;
+  A[0][1] = 1;
+  A[1][0] = bss * cos(angleLin * PI / 180);
+  A[1][1] = css;
+
+  // Se llena la matriz B
+  B[0][0] = 0;
+  B[1][0] = ass;
+
+  // Se llena la matriz C
+  C[0][0] = 1;
+  C[0][1] = 0;
+
+  // Se llena la matriz D
+  D = 0;
+}
 
 
 
