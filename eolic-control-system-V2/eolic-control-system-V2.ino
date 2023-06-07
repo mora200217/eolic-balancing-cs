@@ -16,7 +16,6 @@ double C[1][2];
 double D;
 
 double L[2][1] = {{42.6055},{857.6136}};
-double Ts = 2.5e-3;
 
 int ang, lang = 0;
 
@@ -29,12 +28,64 @@ float thetaHat;
 float omegaHat;
 float angle; //VERIFICAR NOMBRE
 
+//SMC
+int a = 1;
+int beta = 40;
+int directBeta = 40;
+float Ref = 90;//VERIFICAR NOMBRE
+float delta;
+
+//Hinf con Ts = 2.5e-3
+float f1 = 12.04;
+float f2 = -32.62;
+float f3 = 17.32;
+float f4 = 23.84;
+float f5 = -29.36;
+float f6 = 8.782;
+float f7 = 1;
+float f8 = -4.2;
+float f9 = 6.966;
+float f10 = -5.685;
+float f11 = 2.273;
+float f12 = -0.3543;
+
+float un5,un4,un3,un2,un1,CmdHinf = 0.0;
+float en5,en4,en3,en2,en1,error = 0.0;
+
+long previousMillis = 0;
+double directCmd=40;
+int Uunits=4;
+int pwmMax=255;
+unsigned int pwmDuty = 0;
+float Ts = 2.5; //ms
+
 void observer(){
+  angle = ams5600.getAngleProcessed();
   thetaHat = A[1][1]*thetaP+A[1][2]*omegaP+B[1][1]*uP+L[1][1]*angleP-L[1][1]*thetaP;
   omegaHat = A[2][1]*thetaP+A[2][2]*omegaP+B[2][1]*uP+L[2][1]*angleP-L[2][1]*thetaP;
   thetaP = thetaHat;
   omegaP = omegaHat;
   angleP = angle;
+}
+
+int sign(float num){
+  if (num = 0){
+    return 0;
+  } else if (num>0){
+    return 1;
+  } else if (num<0){
+    return -1;
+  }
+}
+
+void SMCController(){
+  observer();
+  delta = Ref; //En grados
+  float inSign = a*(PI/180)*(angle-delta)+omegaHat;
+  int signo = sign(inSign);
+  int uSMC = -beta*signo;
+  int u = uSMC + directBeta;
+  //Valor entre 0 y 80 falta pasarlo al motor en forma de PWM
 }
 
 
@@ -89,6 +140,46 @@ float D = 0;*/
 
   // Se llena la matriz D
   D = 0;
+}
+
+void controlHinf(){
+  unsigned long currentMillis = millis();
+  if (currentMillis - previousMillis >= Ts ) {
+    previousMillis = currentMillis;
+    //sensorValue = analogRead(sensorPin);
+    ang=ams5600.getAngleProcessed();//(202.3460388183-(float(sensorValue)*360/1023));
+    double Cmd = 255*(directCmd+CmdHinf)/100;  
+    double CmdLim = min(max(Cmd, 0), 1); // Saturated Control Output
+    pwmDuty = int((CmdLim/1)*pwmMax);
+    //analogWrite(IN3,pwmDuty);
+
+    if (currentMillis >= 5000) {
+     
+      error = (Ref - ang)*PI/180;
+      float E2= (Ref - ang);
+      //Red de adelanto
+      CmdHinf=(f1*error+f2*en1+f3*en2+f4*en3+f5*en4+f6*en5-f8*un1-f9*un2-f10*un3-f11*un4-f12*un5)/f7;
+      //Actualizamos los errores
+      en5 = en4;
+      en4 = en3;
+      en3 = en2;
+      en2 = en1;
+      en1 = error;
+      //Actualizamos las señales de control
+      un5 = un4;
+      un4 = un3;
+      un3 = un2;
+      un2 = un1;
+      un1 = CmdHinf;
+     
+    }
+    Serial.print(currentMillis/1000.0,DEC);
+    Serial.print(",");
+    Serial.print(Ref,DEC);
+    Serial.print(",");
+    Serial.println(ang,DEC);  
+   
+   }
 }
 
 
