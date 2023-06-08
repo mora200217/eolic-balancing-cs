@@ -125,13 +125,13 @@ float C [1] [2]= {1, 0};
 float D = 0;*/
 
   // Se llena la matriz A
-  A[0][0] = 0;
-  A[0][1] = 1;
-  A[1][0] = bss * cos(angleLin * PI / 180);
+  A[0][0] = 0.0;
+  A[0][1] = 1.0;
+  A[1][0] = bss * cos(angleLin * PI / 180.0);
   A[1][1] = css;
 
   // Se llena la matriz B
-  B[0][0] = 0;
+  B[0][0] = 0.0;
   B[1][0] = ass;
 
   // Se llena la matriz C
@@ -139,7 +139,7 @@ float D = 0;*/
   C[0][1] = 0;
 
   // Se llena la matriz D
-  D = 0;
+  D = 0.0;
 }
 
 void controlHinf(){
