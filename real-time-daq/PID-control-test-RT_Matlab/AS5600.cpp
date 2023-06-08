@@ -57,10 +57,10 @@ float AMS_5600::getAngleProcessed()
   word newAngle = getRawAngle();
   
   float retVal = newAngle * 0.087890625;
-  // return retVal;
+  //return retVal;
 
-  const float OFFSET = 251.18164; 
-  if(retVal > 200){
+  const float OFFSET = 170.680; 
+  if(retVal > 10){
     retVal = retVal - OFFSET; 
   }else{
     retVal = retVal + (360 - OFFSET); 

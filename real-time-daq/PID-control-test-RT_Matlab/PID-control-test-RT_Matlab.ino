@@ -99,13 +99,13 @@ double L[2][1] = {{42.6055},{857.6136}};
 
 //int ang, lang = 0;
 
-double thetaP = 0;
-double omegaP = 0;
-double angleP = 0;
-double uP = 0;
+double thetaP = 0.0;
+double omegaP = 0.0;
+double angleP = 0.0;
+double uP = 0.0;
 
-double thetaHat;
-double omegaHat;
+double thetaHat = 0.0;
+double omegaHat = 0.0;
 
 
 
@@ -151,10 +151,16 @@ void loop()
 
 void observer(){
   //ang = ams5600.getAngleProcessed();
+  Serial.println(thetaP);
+  delay(100);
   thetaHat = A[0][0]*thetaP+A[0][1]*omegaP+B[0][0]*CmdLim+L[0][0]*angleP-L[0][0]*thetaP;
   omegaHat = A[1][0]*thetaP+A[1][1]*omegaP+B[1][0]*CmdLim+L[1][0]*angleP-L[1][0]*thetaP;
   thetaP = thetaHat;
   omegaP = omegaHat;
+  /*Serial.print("Theta: ");
+  Serial.println(thetaHat);
+  Serial.print("Omega: ");
+  Serial.println(omegaHat);*/
   angleP = ang*PI/180.0;
 }
 
@@ -200,10 +206,10 @@ void controlPI() {
     //sensorValue = analogRead(sensorPin);
     //ang=(202.3460388183-(float(sensorValue)*360/1023));
     ang = sensor.getAngleProcessed();
-    //observer();
     //ang=50;
     double Cmd = directCmd + CmdC;
     CmdLim = min(max(Cmd, 0), 1); // Saturated Control Output
+    observer();
     pwmDuty = int((CmdLim / 1) * pwmMax);
     analogWrite(IN3, pwmDuty);
 
@@ -228,17 +234,18 @@ void controlPI() {
 
     }
 
+/*
     Serial.print(currentMillis / 1000.0,4);
     Serial.print("\t");
     Serial.print(CmdLim*100,3);
     Serial.print("\t");
     Serial.print(ang,3);
     Serial.print("\t");
-    Serial.print(Ref);
+    Serial.println(Ref);
     Serial.print("\t");
     Serial.print(thetaHat);
     Serial.print("\t");
-    Serial.println(omegaHat);
+    Serial.println(omegaHat);*/
   }
 
   recvWithStartEndMarkers();
