@@ -6,6 +6,7 @@ addpath("data");
 %% Cargar los datos 
 load("data/TF.mat"); 
 load("data/observer.mat"); 
+load("data/getTF.mat"); 
 
 %% Diseñadores 
 addpath("controllers/SMC"); addpath("controllers/SMC/design"); 
@@ -17,4 +18,7 @@ load("controllers/Hinf/Hinf.mat")
 %% Display
 clc;
 disp("Se han cargado correctamente los valores para la simulacion ert!"); 
+pause(0.1)
+disp("Abriendo mind.slx"); 
+open("mind.slx")
 
