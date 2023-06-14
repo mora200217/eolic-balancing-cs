@@ -2,7 +2,7 @@
 ## Makefile generated for component 'mind'. 
 ## 
 ## Makefile     : mind.mk
-## Generated on : Wed Jun 14 12:59:55 2023
+## Generated on : Wed Jun 14 17:21:59 2023
 ## Final product: $(RELATIVE_PATH_TO_ANCHOR)/mind.elf
 ## Product type : executable
 ## 
