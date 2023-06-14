@@ -2,7 +2,7 @@
 ## Makefile generated for component 'mind'. 
 ## 
 ## Makefile     : mind.mk
-## Generated on : Wed Jun 14 12:59:55 2023
+## Generated on : Wed Jun 14 12:33:13 2023
 ## Final product: $(RELATIVE_PATH_TO_ANCHOR)/mind.elf
 ## Product type : executable
 ## 
@@ -21,7 +21,7 @@ MAKEFILE                  = mind.mk
 MATLAB_ROOT               = /Applications/MATLAB_R2022b.app
 MATLAB_BIN                = /Applications/MATLAB_R2022b.app/bin
 MATLAB_ARCH_BIN           = $(MATLAB_BIN)/maci64
-START_DIR                 = /Users/amoralesma/Documents/UN/TdC/eolic-balancing-system/implementacion
+START_DIR                 = /Users/amoralesma/Documents/UN/TdC/eolic-balancing-system
 SOLVER                    = 
 SOLVER_OBJ                = 
 CLASSIC_INTERFACE         = 0
