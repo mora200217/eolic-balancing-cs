@@ -49,7 +49,8 @@ D = [0];
 Gss = ss(A, B, C, D);
 Gss.StateName= {'theta','omega'};
 Gss.OutputName= {'theta'};
+Gss.InputName = {'%PWM'};
 
-save('../../../data/TF.mat');
+save('TF.mat');
 
 end
