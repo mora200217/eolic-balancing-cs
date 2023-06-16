@@ -1,3 +1,4 @@
+
 clear; clc; close all; 
 %% Configuracion
 addpath("controllers"); 
@@ -22,17 +23,6 @@ pause(0.1)
 disp("Abriendo mind.slx"); 
 open("mind.slx")
 
-
-%% Señales de prueba 
-u = @(t) t>= 0;  % Funcion paso
-Ts = 2.5e-3;     % Tiempo de muestreo  
-T = 35;          % Tiempo final de sim
-
-tsim = 0:Ts:T;    
-x_cte = 60;
-tbt = 7;         % Separacion entre señales
-refsim =  30 * u(t - tbt)  +  10 * u(t - 2 * tbt) - 30 * u(t - 3 * tbt) + x_cte - 70 * u(t - 4 * tbt); % Señal de referencia 
-plot(t, x); 
 
 
 
