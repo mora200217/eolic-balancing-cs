@@ -15,7 +15,7 @@ addpath("controllers/Hinf"); addpath("controllers/Hinf/design");
 addpath("controllers/MRAC"); addpath("controllers/MRAC/design");
 %% Controladores 
 load("controllers/SMC/SMC.mat")
-load("controllers/Hinf/Hinf.mat")
+load("controllers/Hinf/design/Hinf.mat")
 load("controllers/MRAC/design/MRAC.mat")
 %% Display
 clc;
