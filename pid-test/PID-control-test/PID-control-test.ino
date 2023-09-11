@@ -101,10 +101,10 @@ void loop()
   //Salida para que el motor gire en un sentido
   //digitalWrite (IN3, HIGH);
   digitalWrite (IN4, LOW);
-  //controlPI();
+  controlPI();
   
   //RefChange();
-  caracterizacion();
+  //caracterizacion();
 }
 
 void caracterizacion() {
@@ -264,5 +264,3 @@ void recvWithStartEndMarkers() {
 void parseData() {      // split the data into its parts
     Ref = atof(receivedChars);     // convert serial input to a float and update System Reference value with that value
 }
-
-
