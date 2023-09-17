@@ -22,7 +22,7 @@ clc;
 disp("Se han cargado correctamente los valores para la simulacion ert!"); 
 pause(0.1)
 disp("Abriendo mind.slx"); 
-open("mind.slx")
+%open("mind.slx")  
 
 
 
